@@ -9,23 +9,20 @@ FILLED_CDF_2 = 'filled_cdf_2'
 
 def get_cdf(df, variable, col_name):
 
-	cdf = df.select(variable).na.drop().withColumn(
-		col_name,
-		funcs.cume_dist().over(Window.orderBy(variable))
-	).distinct()
+	cdf = df.select(variable).na.drop().\
+		withColumn(
+			col_name,
+			funcs.cume_dist().over(Window.orderBy(variable))
+		).distinct()
 
 	return cdf
 
 
 def ks_2samp(df1, df2, variable):
 
-	ks_stat = get_cdf(
-			df1, variable, CDF_1
-		).\
+	ks_stat = get_cdf(df1, variable, CDF_1).\
 		join(
-			get_cdf(
-				df2, variable, CDF_2
-			),
+			get_cdf(df2, variable, CDF_2),
 			on=variable,
 			how='outer'
 		).\
