@@ -47,10 +47,9 @@ def ks_2samp(df1, var1, df2, var2):
         ).\
         collect()[0][0]
 
+    # Adapted from scipy.stats ks_2samp
     n1 = df1.select(var1).na.drop().count()
     n2 = df2.select(var2).na.drop().count()
-
-    # From scipy.stats ks_2samp
     en = np.sqrt(n1 * n2 / float(n1 + n2))
     try:
         prob = distributions.kstwobign.sf((en + 0.12 + 0.11 / en) * ks_stat)
