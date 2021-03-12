@@ -25,7 +25,7 @@ def ks_2samp(df1, var1, df2, var2):
     ks_stat = get_cdf(df1, var1, CDF_1).\
         join(
             get_cdf(df2, var2, CDF_2),
-            on=var1 == var2,
+            on=df1[var1] == df2[var2],
             how='outer'
         ).\
         withColumn(
